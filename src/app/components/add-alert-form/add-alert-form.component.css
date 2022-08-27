@@ -1,0 +1,232 @@
+.row {
+  margin: 10px;
+}
+.margin {
+  margin: 7px;
+}
+.other-margin{
+  margin-top: 18px
+}
+.type-button {
+  width: 260px;
+}
+
+.button-by-me{
+  border: 1px solid #ced4da;
+  /* padding-top: 6px; */
+  padding: 6px;
+}
+
+.button-by-me:hover{
+  /* border */
+  border-color: #1c78fa;
+  background-color: #1c78fa;
+  color: white;
+  /* padding-top: 6px; */
+  padding: 6px;
+  cursor: pointer;
+}
+/* .dateButton{
+  border-radius: 20px;
+} */
+
+/* [name='wantedAttributeValue'] */
+input[type='radio'] { display:none; }
+/* label {
+ display: inline-block;
+  padding: 3px;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  background-color: #810808;
+  width: 10em;
+  text-align: center;
+} */
+
+/* Clicking a label will select its corresponding hidden radio button
+   We can select that radio buttons sibling label and style it. */
+
+   /* [name="options"] */
+input[type="radio"]:checked + label {
+  background-color: #1c78fa;
+  border-color: #1c78fa;
+  color: #fff;
+}
+
+#msform {
+  text-align: center;
+  position: relative;
+  margin-top: 30px;
+  /* color: rgb(255, 255, 255); */
+}
+#msform fieldset {
+  background: rgb(208, 229, 241);
+  border: 0 none;
+  border-radius: 0px;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+  padding: 20px 30px;
+  box-sizing: border-box;
+  width: 80%;
+  margin: 0 10%;
+  /*stacking fieldsets above each other*/
+  position: relative;
+}
+/*Hide all except first fieldset*/
+#msform fieldset:not(:first-of-type) {
+  display: none;
+}
+#msform .action-button:disabled {
+  width: 100px;
+  background: #eb96bf;
+  font-weight: bold;
+  color: white;
+  border: 0 none;
+  border-radius: 25px;
+  cursor: pointer;
+  padding: 10px 5px;
+  margin: 10px 5px;
+}
+#msform .action-button {
+  width: 100px;
+  background: #ee0979;
+  font-weight: bold;
+  color: white;
+  border: 0 none;
+  border-radius: 25px;
+  cursor: pointer;
+  padding: 10px 5px;
+  margin: 10px 5px;
+}
+#msform .action-button:hover,
+#msform .action-button:focus {
+  box-shadow: 0 0 0 2px white, 0 0 0 3px #ee0979;
+}
+#msform .action-button-previous {
+  width: 100px;
+  background: rgb(173, 151, 194);
+  font-weight: bold;
+  color: white;
+  border: 0 none;
+  border-radius: 25px;
+  cursor: pointer;
+  padding: 10px 5px;
+  margin: 10px 5px;
+}
+
+#msform .action-button-previous:hover,
+#msform .action-button-previous:focus {
+  box-shadow: 0 0 0 2px white, 0 0 0 3px #c5c5f1;
+}
+/*headings*/
+.fs-title {
+  font-size: 18px;
+  text-transform: uppercase;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+.fs-subtitle {
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+}
+/*progressbar*/
+#progressbar {
+  margin-bottom: 40px;
+  margin-right: 55px;
+  overflow: hidden;
+  /*CSS counters to number the steps*/
+  counter-reset: step;
+}
+#progressbar li {
+  list-style-type: none;
+  color: #2c3e50; /*kanet white*/
+  font-family: Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  font-size: 9px;
+  width: 33.33%;
+  float: left;
+  position: relative;
+  letter-spacing: 1px;
+}
+#progressbar li:before {
+  content: counter(step);
+  counter-increment: step;
+  width: 24px;
+  height: 24px;
+  line-height: 26px;
+  display: block;
+  font-size: 12px;
+  color: #333;
+  background: white;
+  border-radius: 25px;
+  margin: 0 auto 10px auto;
+}
+/*progressbar connectors*/
+#progressbar li:after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  background: rgb(208, 229, 241); /*badeltha kanet white*/
+  position: absolute;
+  left: -50%;
+  top: 9px;
+  z-index: -1; /*put it behind the numbers*/
+}
+#progressbar li:first-child:after {
+  /*connector not needed before the first step*/
+  content: none;
+}
+/*marking active/completed steps green*/
+/*The number of the step and the connector before it = green*/
+#progressbar li.active:before,
+#progressbar li.active:after {
+  /* background: #ee0979; */
+  background: #2A0FFD;
+  color: white;
+}
+
+#progressbar li.inactive:before {
+  background: rgb(208, 229, 241);
+  color: #000;
+}
+
+select, input, textarea, label {
+    animation: 0.8s opac ease-in-out;
+}
+fieldset {
+  animation: 1s slidein ease-in-out;
+}
+
+@keyframes opac {
+  0% {opacity: 0.0}
+    4% {opacity: 0.3}
+    33.33% {opacity: 0.5}
+    37.33% {opacity: 0.7}
+    100% {opacity: 1.0}
+}
+
+@keyframes slidein {
+  0% {
+    margin-top: 20em;
+  }
+  4% {
+    margin-top: 10em;
+  }
+  31% {
+    margin-top: 0em;
+  }
+  35% {
+    margin-top: 0em;
+  }
+  64% {
+    margin-top: 0em;
+  }
+  96% {
+    margin-top: 0em;
+  }
+  100% {
+    margin-top: 0em;
+  }
+}
