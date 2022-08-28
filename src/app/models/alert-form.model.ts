@@ -1,4 +1,5 @@
 export interface AlertForm {
+    id?: number,
     entity: string;
     entityCriteria: string;
     entityCriteriaValue: string;

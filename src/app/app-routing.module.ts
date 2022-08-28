@@ -7,11 +7,7 @@ import { EmployerListComponent } from './components/employer-list/employer-list.
 
 const routes: Routes = [
   { path: '', redirectTo: '/alerts', pathMatch: 'full' },
-  {
-    path: 'alerts',
-    component: AlertListComponent,
-    children: [{ path: ':id/edit', component: AddAlertFormComponent }],
-  },
+  { path: 'alerts', component: AlertListComponent},
   {
     path: 'employers',
     component: EmployerListComponent,
@@ -22,7 +18,8 @@ const routes: Routes = [
   },
   {
     path: 'add-alert', component: AddAlertFormComponent
-  }
+  },
+  { path: 'alerts/:id/edit', component: AddAlertFormComponent },
 
 ];
 

@@ -1,1 +1,28 @@
-<p>alert-list works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 ">
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          *ngFor="let alert of alerts"
+          [ngClass]="getStatusClasses(alert)">
+          <span
+            class="badge">
+            {{ alert.update }}
+          </span>
+          <strong>{{ alert.entity }}</strong> | {{ alert.entityCriteria }} | 
+      {{alert.entityCriteriaValue}} |
+      {{alert.attribute}} |
+      {{alert.wantedAttributeValue}} |
+      {{alert.update}} |
+      {{alert.dayNumber}} |
+      {{alert.alertMode}} |
+      {{alert.destination}} |
+      {{alert.destinationValue}} |
+      {{alert.text}}}}
+      <button class="btn btn-primary" routerLink="./{{alert.id}}/edit" routerLinkActive = "active">edit</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

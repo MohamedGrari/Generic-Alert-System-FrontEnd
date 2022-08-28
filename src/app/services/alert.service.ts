@@ -59,4 +59,22 @@ export class AlertService {
     this.alertForm['text'] = alertDestination.value['text'];
     this.alertForm['alertMode'] = alertDestination.value['alertMode'];
   }
+  getById(id: number) {
+    return (
+      {
+      entity: 'employer',
+      entityCriteria: 'position',
+      entityCriteriaValue: 'MANAGER',
+      attribute: 'position',
+      wantedAttributeValue: 'RH',
+      update: true,
+      dayNumber: 0,
+      alertMode: 'SMS',
+      destination: 'ALL',
+      destinationValue: '',
+      text: 'hi by med',
+    }
+    )
+    // return this.http.get<AlertForm>("baseUrl" + "id");
+  }
 }
