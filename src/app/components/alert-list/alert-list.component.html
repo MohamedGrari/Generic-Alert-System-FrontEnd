@@ -1,28 +1,36 @@
-<div class="container">
+<!-- <div class="container">
   <div class="row">
-    <div class="col-xs-12 ">
-      <ul class="list-group">
-        <li
-          class="list-group-item"
-          *ngFor="let alert of alerts"
-          [ngClass]="getStatusClasses(alert)">
-          <span
-            class="badge">
-            {{ alert.update }}
-          </span>
-          <strong>{{ alert.entity }}</strong> | {{ alert.entityCriteria }} | 
-      {{alert.entityCriteriaValue}} |
-      {{alert.attribute}} |
-      {{alert.wantedAttributeValue}} |
-      {{alert.update}} |
-      {{alert.dayNumber}} |
-      {{alert.alertMode}} |
-      {{alert.destination}} |
-      {{alert.destinationValue}} |
-      {{alert.text}}}}
-      <button class="btn btn-primary" routerLink="./{{alert.id}}/edit" routerLinkActive = "active">edit</button>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
+    <div class="col col-xs-12"> -->
+      <table class="table table-sm table-responsive table-hover me-2">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Entity</th>
+      <th scope="col">Criteria</th>
+      <th scope="col">Criteria Val</th>
+      <th scope="col">Attribute</th>
+      <th scope="col">Attribute Val</th>
+      <th scope="col">Day no</th>
+      <th scope="col">Mode</th>
+      <th scope="col">Dest</th>
+      <th scope="col">Dest Val</th>
+      <th scope="col">Manage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr  *ngFor="let alert of alerts" [ngClass]="getStatusClasses(alert)">
+      <th scope="row">{{alert.id}}</th>
+      <td>{{ alert.entity === 'employer' ? 'emp' : alert.entity}}</td>
+      <td>{{ alert.entityCriteria }}</td>
+      <td>{{alert.entityCriteriaValue}}</td>
+      <td>{{alert.attribute}}</td>
+      <td>{{alert.wantedAttributeValue}}</td>
+      <td>{{alert.dayNumber === 0 ? '-' : alert.dayNumber}}</td>
+      <td>{{alert.alertMode}}</td>
+      <td>{{alert.destination}}</td>
+      <td>{{alert.destinationValue}}</td>
+      <td><button class="btn btn-sm btn-primary me-2" routerLink="./{{alert.id}}/edit" routerLinkActive = "active">Edit</button>
+      <button class="btn btn-sm btn-danger" (click)="onDelete()">Delete</button></td>
+    </tr>
+  </tbody>
+</table>

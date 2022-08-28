@@ -60,4 +60,7 @@ export class AlertListComponent implements OnInit {
       'list-group-item-danger': alertForm.update === false,
     };
   }
+  onDelete() {
+
+  }
 }
