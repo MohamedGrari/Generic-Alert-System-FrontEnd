@@ -1,5 +1,5 @@
 <div class="container p-2 ">
-  <div class="row">
+  <div class="row" *ngIf="editMode === false">
     <div class="col-md-12 col-md-offset-3">
       <button type="button" (click)="onClick()" class="btn btn-primary">
             clickMe
@@ -537,6 +537,600 @@
                   class="form-select"
                   formControlName="destinationValue"
                   [(ngModel)]="destinationValue$"
+                >
+                  <option value="null" hidden disabled>
+                    Please select the Contract Type
+                  </option>
+                  <option value="CDI">CDI</option>
+                  <option value="CDD">CDD</option>
+                  <option value="FREELANCE">Freelance</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            *ngIf="
+              alertDestination.controls['alertMode'].value !== 'CONSOLE' &&
+              alertDestination.controls['destination'].value === 'ONE'
+            "
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <input
+                  type="text"
+                  id="employerName"
+                  placeholder="enter the employer's name"
+                  class="form-control"
+                  formControlName="destinationValue"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            *ngIf="alertDestination.controls['alertMode'].value !== 'CONSOLE'"
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <textarea
+                  class="form-control"
+                  name="text"
+                  id="text"
+                  rows="3"
+                  formControlName="text"
+                  placeholder="Enter your text here"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-xs-12">
+              <input
+            (click)="previous()"
+            type="button"
+            name="previous"
+            class="previous action-button-previous"
+            value="Previous"
+          />
+          <input
+            type="submit"
+            name="submit"
+            class="submit action-button"
+            value="Save"
+            [disabled]="((alertDestination.controls['alertMode'].value !== 'CONSOLE' && alertDestination.controls['destination'].value !== 'ALL' && alertDestination.controls ['destinationValue'].invalid) 
+            || (alertDestination.controls['text'].invalid) || (alertDestination.controls['alertMode'].value !== 'CONSOLE' && alertDestination.controls['destination'].value!=='ALL' && alertDestination.controls['destinationValue'].invalid))"
+          />
+            </div>
+          </div>
+          
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
+
+  <div class="row" *ngIf="editMode === true">
+    <div class="col-md-12 col-md-offset-3">
+      <button type="button" (click)="onClick()" class="btn btn-primary">
+            clickMe
+          </button>
+      <form [formGroup]="alertSubject" id="msform">
+        <!-- progressbar -->
+        <ul id="progressbar">
+          <li [ngClass]="step >= 1 ? 'active ' : 'inactive'">Alert Subject</li>
+          <li [ngClass]="step >= 2 ? 'active' : 'inactive'">Alert Trigger</li>
+          <li [ngClass]="step == 3 ? 'active' : 'inactive'">
+            Alert Destination
+          </li>
+        </ul>
+        <!-- fieldsets -->
+        <fieldset *ngIf="step == 1">
+          <h2 class="fs-title">Alert Subject</h2> 
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="entity"
+                >
+                  <option value="employer" disabled>Employer</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="entityTarget"
+                >
+                  <option value="ALL">All</option>
+                  <option value="ONE">Specific employer</option>
+                  <option value="null">According to a criteria</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            *ngIf="alertSubject.controls['entityTarget'].value === 'null'"
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="entityCriteria"
+                >
+                  <option value="null" hidden disabled>
+                    Please select a criteria
+                  </option>
+                  <option value="position">Position</option>
+                  <option value="status">Status</option>
+                  <option value="contractType">Contract Type</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            *ngIf="
+              alertSubject.controls['entityTarget'].value === 'null' &&
+              alertSubject.controls['entityCriteria'].value === 'status'
+            "
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="entityCriteriaValue"
+                >
+                  <option value="null" hidden disabled>
+                    Please select the Status
+                  </option>
+                  <option value="ON">On</option>
+                  <option value="OFF">Off</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            *ngIf="
+              alertSubject.controls['entityCriteria'].value === 'position' &&
+              alertSubject.controls['entityTarget'].value === 'null'
+            "
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="entityCriteriaValue"
+                >
+                  <option value="null" hidden disabled>
+                    Please select the targeted Position
+                  </option>
+                  <option value="SENIOR">Senior Developper</option>
+                  <option value="JUNIOR">Junior Developper</option>
+                  <option value="RH">RH</option>
+                  <option value="MANAGER">Manager</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            *ngIf="
+              alertSubject.controls['entityCriteria'].value ===
+                'contractType' &&
+              alertSubject.controls['entityTarget'].value === 'null'
+            "
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="entityCriteriaValue"
+                >
+                  <option value="null" hidden disabled>
+                    Please select the Contract Type
+                  </option>
+                  <option value="CDI">CDI</option>
+                  <option value="CDD">CDD</option>
+                  <option value="FREELANCE">Freelance</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            *ngIf="alertSubject.controls['entityTarget'].value === 'ONE'"
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <input
+                  type="text"
+                  placeholder="enter the employer's name"
+                  class="form-control"
+                  formControlName="entityCriteriaValue"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-xs-12">
+              <input
+            (click)="next()"
+            type="button"
+            name="next"
+            class="next action-button"
+            value="Next"
+            [disabled]="(alertSubject.controls['entityTarget'].value === 'ONE' && alertSubject.controls['entityCriteriaValue'].invalid)"
+          />
+            </div>
+          </div>
+        </fieldset>
+      </form>
+      <form [formGroup]="alertTrigger" id="msform">
+        <fieldset *ngIf="step == 2">
+          <h2 class="fs-title">Alert Trigger</h2>
+          <!-- <button type="button" (click)="onClick()" class="btn btn-primary">
+            clickMe
+          </button> -->
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <input
+                  type="radio"
+                  name="update"
+                  value="false"
+                  id="date"
+                  formControlName="update"
+                />
+                <label for="date" class="btn btn-outline-primary type-button margin" >Keep track of an event</label>
+                <input
+                  type="radio"
+                  name="update"
+                  value="true"
+                  id="string"
+                  formControlName="update"
+                />
+                <label for="string" class="btn btn-outline-primary type-button margin">Keep track of any change</label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            *ngIf="alertTrigger.controls['update'].value === 'true'"
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="attribute"
+                >
+                  <option value="null" hidden disabled>
+                    Please select the targeted criteria
+                  </option>
+                  <option value="position">Position</option>
+                  <option value="status">Status</option>
+                  <option value="contractType">Contract Type</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="row"
+            *ngIf="alertTrigger.controls['update'].value === 'false'"
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  id="dateAttribute"
+                  class="form-select"
+                  formControlName="attribute"
+                >
+                  <option value="null" hidden disabled>
+                    Please select the targeted criteria
+                  </option>
+                  <option value="endContract">End of Contract</option>
+                  <option value="hireDate">Hire Date</option>
+                  <option value="birthday">Birth Date</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="row"
+            *ngIf="
+              alertTrigger.controls['update'].value === 'true' &&
+              alertTrigger.controls['attribute'].value === 'position'
+            "
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="wantedAttributeValue"
+                >
+                  <option value="null" hidden disabled>
+                    Wanted criteria value
+                  </option>
+                  <option value="SENIOR">Senior Developper</option>
+                  <option value="JUNIOR">Junior Developper</option>
+                  <option value="RH">RH</option>
+                  <option value="MANAGER">Manager</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            *ngIf="
+              alertTrigger.controls['update'].value === 'true' &&
+              alertTrigger.controls['attribute'].value === 'contractType'
+            "
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="wantedAttributeValue"
+                >
+                  <option value="null" hidden disabled>
+                    Wanted criteria value
+                  </option>
+                  <option value="CDI">CDI</option>
+                  <option value="CDD">CDD</option>
+                  <option value="FREELANCE">Freelance</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="row"
+            *ngIf="
+              alertTrigger.controls['update'].value === 'true' &&
+              alertTrigger.controls['attribute'].value === 'status'
+            "
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="wantedAttributeValue"
+                >
+                  <option value="null" hidden disabled>
+                    Wanted criteria value
+                  </option>
+                  <option value="ON">ON</option>
+                  <option value="OFF">OFF</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <!-- <input type="radio" name="item" value="{{item}}" [attr.checked]="i === 0 ? '' : null"> -->
+          <div
+            class="input-group other-margin"
+            *ngIf="
+              alertTrigger.controls['update'].value === 'false' &&
+              (alertTrigger.controls['attribute'].value === 'endContract' ||
+                alertTrigger.controls['attribute'].value === 'birthday' ||
+                alertTrigger.controls['attribute'].value === 'hireDate')
+            "
+          > 
+          <input
+          type="radio"
+          name="wantedAttributeValue"
+          id="at"
+          value="AT"
+          autocomplete="off"
+          formControlName="wantedAttributeValue"
+          />
+          <label for="at" class="button-by-me  rounded-start">At</label>
+            
+          <input
+          type="radio"
+          name="wantedAttributeValue"
+          id="before"
+          value="BEFORE"
+          autocomplete="off"
+          formControlName="wantedAttributeValue"
+          />
+          <label for="before" class="button-by-me" >Before</label>
+              
+            <input
+            type="radio"
+            name="wantedAttributeValue"
+            id="after"
+            value="AFTER"
+            autocomplete="off"
+            formControlName="wantedAttributeValue"
+            />
+            <label for="after" class="button-by-me">After</label>
+              
+            <input
+              type="number"
+              class="form-control"
+              formControlName="dayNumber"
+              [attr.disabled]="
+                alertTrigger.controls['wantedAttributeValue'].value === 'AT'
+                  ? ''
+                  : null
+              "
+            />
+            <div class="input-group-text">days</div>
+          </div>
+          <div class="row">
+            <div class="col col-xs-12">
+              <input
+            (click)="previous()"
+            type="button"
+            name="previous"
+            class="previous action-button-previous"
+            value="Previous"
+          />
+          <input
+            (click)="next()"
+            type="button"
+            name="next"
+            class="next action-button"
+            value="Next"
+            [disabled]="(alertTrigger.invalid)"
+          />
+            </div>
+          </div>
+        </fieldset>
+      </form>
+      <form [formGroup]="alertDestination" id="msform" (ngSubmit)="onSubmit()">
+        <fieldset *ngIf="step == 3">
+          <h2 class="fs-title">Alert Destination</h2>
+          <!-- <button type="button" (click)="onClick()" class="btn btn-primary">
+            clickMe
+          </button> -->
+          <div class="btn-group">
+            <input
+            type="radio"
+            name="alertMode"
+            value="EMAIL"
+            id="email"
+            autocomplete="off"
+            formControlName="alertMode"
+            />
+            <label for="email" class="btn btn-outline-primary rounded-start">Email</label>
+            <input
+                type="radio"
+                name="alertMode"
+                value="CONSOLE"
+                id="console"
+                autocomplete="off"
+                formControlName="alertMode"
+                />
+            <label for="console" class="btn btn-outline-primary">Console</label>
+            <input
+            type="radio"
+            name="alertMode"
+            value="SMS"
+            id="sms"
+            autocomplete="off"
+            formControlName="alertMode"
+            />
+            <label for="sms" class="btn btn-outline-primary">SMS</label>
+          </div>
+
+          <div
+            class="row"
+            *ngIf="alertDestination.controls['alertMode'].value !== 'CONSOLE'"
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="destination"
+                >
+                  <option value="null" hidden disabled>
+                    select the destination
+                  </option>
+                  <option value="ALL">ALL</option>
+                  <option value="ONE">Specific employer</option>
+                  <option value="CRITERIA">According to a criteria</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="row"
+            *ngIf="
+              alertDestination.controls['alertMode'].value !== 'CONSOLE' &&
+              alertDestination.controls['destination'].value === 'CRITERIA'
+            "
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="destinationCriteria"
+                >
+                  <option value="null" hidden disabled>
+                    select the criteria value
+                  </option>
+                  <option value="position">Position</option>
+                  <option value="status">Status</option>
+                  <option value="contractType">Contract Type</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="row"
+            *ngIf="
+              alertDestination.controls['alertMode'].value !== 'CONSOLE' &&
+              alertDestination.controls['destination'].value === 'CRITERIA' &&
+              alertDestination.controls['destinationCriteria'].value ===
+                'status'
+            "
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="destinationValue"
+                >
+                  <option value="null" hidden disabled>
+                    Please select the Status
+                  </option>
+                  <option value="ON">On</option>
+                  <option value="OFF">Off</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            *ngIf="
+              alertDestination.controls['alertMode'].value !== 'CONSOLE' &&
+              alertDestination.controls['destination'].value === 'CRITERIA' &&
+              alertDestination.controls['destinationCriteria'].value ===
+                'position'
+            "
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="destinationValue"
+                >
+                  <option value="null" hidden disabled>
+                    Please select the Position
+                  </option>
+                  <option value="SENIOR">Senior Developper</option>
+                  <option value="JUNIOR">Junior Developper</option>
+                  <option value="RH">RH</option>
+                  <option value="MANAGER">Manager</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+            *ngIf="
+              alertDestination.controls['alertMode'].value !== 'CONSOLE' &&
+              alertDestination.controls['destination'].value === 'CRITERIA' &&
+              alertDestination.controls['destinationCriteria'].value ===
+                'contractType'
+            "
+          >
+            <div class="col-xs-12">
+              <div class="form-group">
+                <select
+                  class="form-select"
+                  formControlName="destinationValue"
                 >
                   <option value="null" hidden disabled>
                     Please select the Contract Type
