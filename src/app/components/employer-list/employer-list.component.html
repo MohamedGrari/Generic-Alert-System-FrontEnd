@@ -1,7 +1,7 @@
 <!-- <div class="container">
   <div class="row">
     <div class="col col-xs-12"> -->
-      <table class="table table-sm table-responsive table-hover">
+<table class="table table-sm table-responsive table-hover">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -18,19 +18,25 @@
     </tr>
   </thead>
   <tbody>
-    <tr  *ngFor="let employer of employers">
-      <th scope="row">{{employer.id}}</th>
+    <tr *ngFor="let employer of employers">
+      <th scope="row">{{ employer.id }}</th>
       <td>{{ employer.name }}</td>
-      <td>{{ employer.email.slice(0,10) + '...' }}</td>
-      <td>{{employer.phoneNumber.slice(4)}}</td>
-      <td>{{employer.position}}</td>
-      <td>{{employer.status}}</td>
-      <td>{{employer.contractType}}</td>
-      <td>{{employer.hireDate}}</td>
-      <td>{{employer.birthday}}</td>
-      <td>{{employer.endContract}}</td>
-      <td><button class="btn btn-sm btn-primary me-2" routerLink="./{{employer.id}}/edit" routerLinkActive = "active">Edit</button>
-      <button class="btn btn-sm btn-danger" (click)="onDelete()">Delete</button></td>
+      <td>{{ employer.email.slice(0, 10) + "..." }}</td>
+      <td>{{ employer.phoneNumber.slice(4) }}</td>
+      <td>{{ employer.position }}</td>
+      <td>{{ employer.status }}</td>
+      <td>{{ employer.contractType }}</td>
+      <td>{{ employer.hireDate }}</td>
+      <td>{{ employer.birthday }}</td>
+      <td>{{ employer.endContract }}</td>
+      <td>
+        <button class="btn btn-sm btn-primary me-2" (click)="openFormModal()">
+          Edit
+        </button>
+        <button class="btn btn-sm btn-danger" (click)="onDelete()">
+          Delete
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>
@@ -44,7 +50,7 @@
     </div>
   </div>
 </div>
- 
+
 <!--form modal-->
 <div
   class="modal fade"
@@ -65,8 +71,100 @@
         ></button>
       </div>
       <div class="modal-body">
-        <h3>Hello!</h3>
-      </div>
+        
+        <form [formGroup]="employerForm">
+          <div class="row">
+            <div class="col col-xs-12">
+          <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="enter employer name" class="form-control" formControlName="name">
+        </div>
+        </div>
+          </div>
+          <div class="row">
+            <div class="col col-xs-12">
+        <div class="form-group">
+          <label for="email">Email Adress</label>
+          <input type="text" id="email" placeholder="enter employer email" class="form-control" formControlName="email">
+        </div>
+        </div>
+          </div>
+          <div class="row">
+            <div class="col col-xs-12">
+        <div class="form-group">
+          <label for="phoneNumber">Phone Number</label>
+          <input type="text" id="phoneNumber" placeholder="enter employer phone number" class="form-control" formControlName="phoneNumber">
+        </div>
+        </div>
+          </div>
+          <div class="row">
+            <div class="col col-xs-12">
+        <div class="form-group">
+          <select
+            class="form-select"
+            formControlName="position">
+            <option value="" hidden disabled>Employer Position</option>
+            <option value="RH">RH</option>
+            <option value="MANAGER">Manager</option>
+            <option value="JUNIOR">Junior Developper</option>
+            <option value="SENIOR">Senior Developper</option>
+          </select>
+        </div>
+        </div>
+          </div>
+          <div class="row">
+            <div class="col col-xs-12">
+        <div class="form-group">
+          <select
+            class="form-select"
+            formControlName="status">
+            <option value="" hidden disabled>Employer Status</option>
+            <option value="ON">ACTIVE</option>
+            <option value="OFF">INACTIVE</option>
+          </select>
+        </div>
+        </div>
+          </div>
+          <div class="row">
+            <div class="col col-xs-12">
+        <div class="form-group">
+          <select
+            class="form-select"
+            formControlName="contractType">
+            <option value="" hidden disabled>Employer Contract Type</option>
+            <option value="CDI">CDI</option>
+            <option value="CDD">CDD</option>
+            <option value="FREELANCE">Freelance</option>
+          </select>
+        </div>
+        </div>
+          </div>
+          <div class="row">
+            <div class="col col-xs-12">
+        <div class="form-group">
+          <label for="hireDate">Hire Date</label>
+          <input type="date" id="hireDate" class="form-control" formControlName="hireDate">
+        </div>
+        </div>
+          </div>
+          <div class="row">
+            <div class="col col-xs-12">
+        <div class="form-group">
+          <label for="endContract">Contract End Date</label>
+          <input type="date" id="endContract" class="form-control" formControlName="endContract">
+        </div>
+        </div>
+          </div>
+          <div class="row">
+            <div class="col col-xs-12">
+        <div class="form-group">
+          <label for="birthday">Birth Date</label>
+          <input type="date" id="birthday" class="form-control" formControlName="birthday">
+        </div>
+        </div>
+          </div>
+        </form>
+        
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
@@ -74,6 +172,7 @@
         <button type="button" class="btn btn-primary" (click)="saveSomeThing()">
           Save changes
         </button>
+      </div>
       </div>
     </div>
   </div>

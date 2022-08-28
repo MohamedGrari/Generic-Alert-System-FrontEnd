@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Employer } from 'src/app/models/employer.model';
 declare var window: any;
 @Component({
@@ -7,6 +8,7 @@ declare var window: any;
   styleUrls: ['./employer-list.component.css'],
 })
 export class EmployerListComponent implements OnInit {
+  employerForm: FormGroup;
   formModal: any;
   employers: Employer[] = [
     {
@@ -22,12 +24,23 @@ export class EmployerListComponent implements OnInit {
       hireDate: '2022-01-01',
     },
   ];
-  constructor() {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.formModal = new window.bootstrap.Modal(
       document.getElementById('myModal')
     );
+    this.employerForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      email: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      position: ['', Validators.required],
+      status: ['', Validators.required],
+      contractType: ['', Validators.required],
+      hireDate: ['', Validators.required],
+      endContract: ['', Validators.required],
+      birthday: ['', Validators.required],
+    })
   }
   onDelete() {}
   openFormModal() {
@@ -35,6 +48,7 @@ export class EmployerListComponent implements OnInit {
   }
   saveSomeThing() {
     // confirm or save something
+    console.log(this.employerForm);
     this.formModal.hide();
   }
 }
