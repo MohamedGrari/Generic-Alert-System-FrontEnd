@@ -96,8 +96,8 @@ export class AddAlertFormComponent implements OnInit {
     else {
       console.log('addMode 5edmet');
       this.alertSubject = this.formBuilder.group({
-        entity: [''],
-        entityTarget: [''],
+        entity: ['employer'],
+        entityTarget: ['ALL'],
         entityCriteria: ['', Validators.required],
         entityCriteriaValue: ['', Validators.required],
       });
@@ -113,7 +113,7 @@ export class AddAlertFormComponent implements OnInit {
       });
 
       this.alertDestination = this.formBuilder.group({
-        alertMode: ['', Validators.required],
+        alertMode: ['CONSOLE', Validators.required],
         destination: ['', Validators.required],
         destinationCriteria: ['', Validators.required],
         destinationValue: ['', Validators.required],
@@ -136,15 +136,9 @@ export class AddAlertFormComponent implements OnInit {
   next() {
     if (this.step == 1) {
       this.personal_step = true;
-      // if (this.alertSubject.invalid) {
-      //   return;
-      // }
       this.step++;
     } else if (this.step == 2) {
       this.address_step = true;
-      // if (this.alertTrigger.invalid) {
-      //   return;
-      // }
       this.step++;
     }
   }
