@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 import { AlertForm } from '../models/alert-form.model';
 
 const baseUrl = 'http://localhost:8080/';
@@ -10,6 +10,8 @@ const baseUrl = 'http://localhost:8080/';
   providedIn: 'root',
 })
 export class AlertService {
+
+  alertChanged = new Subject<AlertForm[]>();
   alertForm: AlertForm = {
     alertMode: '',
     entity: '',
@@ -27,8 +29,27 @@ export class AlertService {
   constructor(private http: HttpClient) {}
 
   create(): Observable<AlertForm> {
-    console.log(this.alertForm);
+    // console.log(this.alertForm);
     return this.http.post<AlertForm>(baseUrl + 'saveRequest', this.alertForm);
+  }
+
+  update(): Observable<AlertForm> {
+    return this.http.put<AlertForm>(baseUrl + 'updateRequest', this.alertForm);
+  }
+
+  get(): Observable<AlertForm[]> {
+    return this.http.get<AlertForm[]>(baseUrl + 'requests').pipe(
+      map(response => {return response;}));
+  }
+
+  delete(alert: AlertForm): Observable<void> {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: alert,
+    };
+    return this.http.delete<void>(baseUrl + 'deleteRequest', options);
   }
 
   handler(
@@ -60,21 +81,19 @@ export class AlertService {
     this.alertForm['alertMode'] = alertDestination.value['alertMode'];
   }
   getById(id: number) {
-    return (
-      {
-      entity: 'employer',
-      entityCriteria: 'position',
-      entityCriteriaValue: 'MANAGER',
-      attribute: 'position',
-      wantedAttributeValue: 'RH',
-      update: true,
-      dayNumber: 0,
-      alertMode: 'SMS',
-      destination: 'ALL',
-      destinationValue: '',
-      text: 'hi by med',
-    }
-    )
-    // return this.http.get<AlertForm>("baseUrl" + "id");
+    // return {
+    //   entity: 'employer',
+    //   entityCriteria: 'position',
+    //   entityCriteriaValue: 'MANAGER',
+    //   attribute: 'position',
+    //   wantedAttributeValue: 'RH',
+    //   update: true,
+    //   dayNumber: 0,
+    //   alertMode: 'SMS',
+    //   destination: 'ALL',
+    //   destinationValue: '',
+    //   text: 'hi by med',
+    // };
+    return this.http.get<AlertForm>("baseUrl" + "id");
   }
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AlertForm } from 'src/app/models/alert-form.model';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-alert-list',
@@ -7,6 +9,8 @@ import { AlertForm } from 'src/app/models/alert-form.model';
   styleUrls: ['./alert-list.component.css'],
 })
 export class AlertListComponent implements OnInit {
+  alertSubscription: Subscription;
+
   alerts: AlertForm[] = [
     {
       id: 1,
@@ -51,16 +55,27 @@ export class AlertListComponent implements OnInit {
       text: 'hi by med',
     }
   ];
-  constructor() {}
+  constructor(private alertService: AlertService) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this.alertSubscription = this.alertService
+      .get()
+      .subscribe((alert: AlertForm[]) => {
+        this.alerts = alert;
+      });
+  }
   getStatusClasses(alertForm: AlertForm) {
     return {
       'list-group-item-success': alertForm.update === true,
       'list-group-item-danger': alertForm.update === false,
     };
   }
-  onDelete() {
-
+  onDelete(alert: AlertForm) {
+    this.alertService.delete(alert).subscribe(
+      () => {
+        this.alerts.splice(this.alerts.indexOf(alert), 1);
+      }
+    )
   }
+
 }

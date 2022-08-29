@@ -56,14 +56,13 @@ export class AddAlertFormComponent implements OnInit {
 
   initForm() {
     if (this.editMode) {
-      console.log("editMode 5edmet")
       let alertForm: AlertForm;
-      alertForm = this.alertService.getById(this.id)
-        // .subscribe(
-        // (data: AlertForm) => {
-        //   alertForm = data;
-        // }
-      // )
+      this.alertService.getById(this.id)
+        .subscribe(
+        (data: AlertForm) => {
+          alertForm = data;
+        }
+      )
       console.log(alertForm);
       this.alertSubject = this.formBuilder.group({
         entity: [alertForm.entity],
@@ -160,11 +159,18 @@ export class AddAlertFormComponent implements OnInit {
       this.alertTrigger,
       this.alertDestination
     );
-    this.alertService.create().subscribe(
-      (alertForm: AlertForm) => {
+    if (this.editMode) {
+      this.alertService.update().subscribe((alertForm: AlertForm) => {
         console.log(alertForm);
         this.router.navigate(['/']);
       });
+    } else {
+      this.alertService.create().subscribe(
+        (alertForm: AlertForm) => {
+          console.log(alertForm);
+          this.router.navigate(['/']);
+        });
+    }
   }
   submit() {
     if (this.step == 3) {

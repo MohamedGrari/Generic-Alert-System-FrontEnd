@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 import { Employer } from '../models/employer.model';
 
 const baseUrl = 'http://localhost:8080/';
@@ -29,5 +29,27 @@ export class EmployerService {
   create(): Observable<Employer> {
     console.log(this.employer);
     return this.http.post<Employer>(baseUrl + 'saveEmployer', this.employer);
+  }
+
+  update(): Observable<Employer> {
+    return this.http.put<Employer>(baseUrl + 'updateEmployer', this.employer);
+  }
+
+  delete(employer: Employer): Observable<void> {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: employer,
+    };
+    return this.http.delete<void>(baseUrl + 'deleteEmployer', options);
+  }
+
+  get(): Observable<Employer[]> {
+    return this.http.get<Employer[]>(baseUrl + 'requests').pipe(
+      map((response) => {
+        return response;
+      })
+    );
   }
 }

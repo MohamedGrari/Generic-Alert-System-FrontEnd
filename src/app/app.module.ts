@@ -12,6 +12,7 @@ import { EmployerListComponent } from './components/employer-list/employer-list.
 import { AlertItemComponent } from './components/alert-item/alert-item.component';
 import { EmployerItemComponent } from './components/employer-item/employer-item.component';
 import { EmployerAddComponent } from './components/employer-add/employer-add.component';
+import { JobListComponent } from './components/job-list/job-list.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { EmployerAddComponent } from './components/employer-add/employer-add.com
     AlertItemComponent,
     EmployerItemComponent,
     EmployerAddComponent,
+    JobListComponent,
   ],
   imports: [
     BrowserModule,

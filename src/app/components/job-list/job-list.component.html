@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <div class="col col-xs-12">
+<table class="table table-sm table-responsive table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Job ID</th>
+      <th scope="col">Job Group</th>
+      <th scope="col">Scheduled At</th>
+      <th scope="col">Alert Time</th>
+      <th scope="col">Employer ID</th>
+      <th scope="col">Alert ID</th>
+      <!-- <th scope="col">Manage</th> -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let job of jobs">
+      <th scope="row">{{ job.id }}</th>
+      <td>{{ job.group }}</td>
+      <td>{{ job.scheduledAt }}</td>
+      <td>{{ job.alertTime}}</td>
+      <td>{{ job.employerId }}</td>
+      <td>{{ job.requestFormId }}</td>
+      <td>
+        <button class="btn btn-sm btn-danger" (click)="onDelete(job)">
+          X
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!-- <div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          *ngFor="let job of jobs"
+          [ngClass]="getStatusClasses(job)">
+          <span
+            class="badge">
+            ACTIVE
+          </span>
+          {{job.id}} | {{ job.group }} | {{ job.scheduledAt }} | {{ job.alertTime}} | {{ job.employerId }} | {{ job.requestFormId}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div> -->

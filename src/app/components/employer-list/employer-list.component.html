@@ -30,10 +30,10 @@
       <td>{{ employer.birthday }}</td>
       <td>{{ employer.endContract }}</td>
       <td>
-        <button class="btn btn-sm btn-primary me-2" (click)="openFormModal()">
+        <button class="btn btn-sm btn-primary me-2" (click)="onEdit(employer)">
           Edit
         </button>
-        <button class="btn btn-sm btn-danger" (click)="onDelete()">
+        <button class="btn btn-sm btn-danger" (click)="onDelete(employer)">
           Delete
         </button>
       </td>
@@ -62,7 +62,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Bootstrp Modal</h5>
+        <h5 class="modal-title" id="exampleModalLabel">{{ editMode ? 'Edit Employer' : 'Add Employer'}}</h5>
         <button
           type="button"
           class="btn-close"
@@ -169,8 +169,8 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
         </button>
-        <button type="button" class="btn btn-primary" (click)="saveSomeThing()">
-          Save changes
+        <button type="button" class="btn btn-primary" (click)="saveSomeThing()" [disabled]="employerForm.invalid">
+          {{editMode ? 'Update' : 'Save'}}
         </button>
       </div>
       </div>

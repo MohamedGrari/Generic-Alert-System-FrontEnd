@@ -30,7 +30,7 @@
       <td>{{alert.destination}}</td>
       <td>{{alert.destinationValue}}</td>
       <td><button class="btn btn-sm btn-primary me-2" routerLink="./{{alert.id}}/edit" routerLinkActive = "active">Edit</button>
-      <button class="btn btn-sm btn-danger" (click)="onDelete()">Delete</button></td>
+      <button class="btn btn-sm btn-danger" (click)="onDelete(alert)">Delete</button></td>
     </tr>
   </tbody>
 </table>
