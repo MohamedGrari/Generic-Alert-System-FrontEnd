@@ -14,7 +14,10 @@ export class EmployerService {
 
   constructor(private http: HttpClient) {}
 
-  handler(employerForm: FormGroup) {
+  handler(employerForm: FormGroup, id?: number) {
+    if (id) {
+      this.employer.id = id;
+    }
     this.employer.name = employerForm.value.name;
     this.employer.email = employerForm.value.email;
     this.employer.phoneNumber = employerForm.value.phoneNumber;
@@ -46,7 +49,7 @@ export class EmployerService {
   }
 
   get(): Observable<Employer[]> {
-    return this.http.get<Employer[]>(baseUrl + 'requests').pipe(
+    return this.http.get<Employer[]>(baseUrl + 'employers').pipe(
       map((response) => {
         return response;
       })

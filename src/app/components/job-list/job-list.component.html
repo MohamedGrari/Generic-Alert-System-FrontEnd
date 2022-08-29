@@ -5,20 +5,20 @@
   <thead>
     <tr>
       <th scope="col">Job ID</th>
-      <th scope="col">Job Group</th>
+      <th scope="col">Job Mode</th>
       <th scope="col">Scheduled At</th>
       <th scope="col">Alert Time</th>
-      <th scope="col">Employer ID</th>
+      <th scope="col">Emp ID</th>
       <th scope="col">Alert ID</th>
       <!-- <th scope="col">Manage</th> -->
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let job of jobs">
-      <th scope="row">{{ job.id }}</th>
-      <td>{{ job.group }}</td>
+      <th scope="row">{{ job.jobId.substr(24,12) }}</th>
+      <td>{{ job.jobGroup.replace("_JOBS","") }}</td>
       <td>{{ job.scheduledAt }}</td>
-      <td>{{ job.alertTime}}</td>
+      <td>{{ job.alertTime.substr(0,10) + ' ' + job.alertTime.substr(11,8)}}</td>
       <td>{{ job.employerId }}</td>
       <td>{{ job.requestFormId }}</td>
       <td>

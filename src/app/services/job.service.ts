@@ -20,12 +20,12 @@ export class JobService {
   }
 
   delete(job: Job): Observable<void> {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      body: job,
-    };
-    return this.http.delete<void>(baseUrl + 'deleteJob', options);
+    // const options = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json',
+    //   }),
+    //   body: job,
+    // };
+    return this.http.delete<void>(baseUrl + 'job/' + job.jobGroup + '/' + job.jobId + '/delete');
   }
 }

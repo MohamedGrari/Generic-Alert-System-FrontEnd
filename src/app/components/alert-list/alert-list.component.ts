@@ -63,6 +63,13 @@ export class AlertListComponent implements OnInit {
       .subscribe((alert: AlertForm[]) => {
         this.alerts = alert;
       });
+    this.alertService.alertUpdated.subscribe((alert: AlertForm) => {
+      for (let alertItem of this.alerts) {
+        if (alertItem.id === alert.id) {
+          this.alerts.splice(this.alerts.indexOf(alertItem), 1,alert);
+        }
+      }
+    })
   }
   getStatusClasses(alertForm: AlertForm) {
     return {

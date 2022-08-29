@@ -24,7 +24,7 @@
       <td>{{ employer.email.slice(0, 10) + "..." }}</td>
       <td>{{ employer.phoneNumber.slice(4) }}</td>
       <td>{{ employer.position }}</td>
-      <td>{{ employer.status }}</td>
+      <td>{{ employer.status === 'ON' ? 'ACTIVE' : 'INACTIVE'}}</td>
       <td>{{ employer.contractType }}</td>
       <td>{{ employer.hireDate }}</td>
       <td>{{ employer.birthday }}</td>
@@ -84,7 +84,7 @@
           <div class="row">
             <div class="col col-xs-12">
         <div class="form-group">
-          <label for="email">Email Adress</label>
+          <label for="email">Email Address</label>
           <input type="text" id="email" placeholder="enter employer email" class="form-control" formControlName="email">
         </div>
         </div>

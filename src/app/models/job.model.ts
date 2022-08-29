@@ -5,6 +5,6 @@ export class Job {
     //  alertTime : string = ''
     //  employerId : number
     // requestFormId: number
-    constructor(public id: string, public group: string, public scheduledAt: string, public alertTime: string, public employerId: number, public requestFormId: number) { }
+    constructor(public jobId: string, public jobGroup: string, public scheduledAt: string, public alertTime: string, public employerId: number, public requestFormId: number) { }
     
 }

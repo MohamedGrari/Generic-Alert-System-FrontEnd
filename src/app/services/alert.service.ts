@@ -11,7 +11,7 @@ const baseUrl = 'http://localhost:8080/';
 })
 export class AlertService {
 
-  alertChanged = new Subject<AlertForm[]>();
+  alertUpdated = new Subject<AlertForm>();
   alertForm: AlertForm = {
     alertMode: '',
     entity: '',
@@ -55,10 +55,14 @@ export class AlertService {
   handler(
     alertSubject: FormGroup,
     alertTrigger: FormGroup,
-    alertDestination: FormGroup
+    alertDestination: FormGroup,
+    id?: number
   ) {
     // alertSubject.value['entityTarget'] === 'ONE'
     //   ? +alertSubject.value['entityCriteriaValue']
+    if (id) {
+      this.alertForm['id'] = id;
+    }
     this.alertForm['entity'] = alertSubject.value['entity'];
     this.alertForm['entityCriteria'] =
       alertSubject.value['entityTarget'] === 'null'
@@ -94,6 +98,6 @@ export class AlertService {
     //   destinationValue: '',
     //   text: 'hi by med',
     // };
-    return this.http.get<AlertForm>("baseUrl" + "id");
+    return this.http.get<AlertForm>(baseUrl + "request/" + id);
   }
 }

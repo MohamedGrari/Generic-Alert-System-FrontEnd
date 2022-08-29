@@ -21,6 +21,7 @@ export class JobListComponent implements OnInit {
       .get()
       .subscribe((job: Job[]) => {
         this.jobs = job;
+        console.log(this.jobs)
       });
   }
 

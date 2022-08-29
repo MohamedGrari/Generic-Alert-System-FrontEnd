@@ -43,54 +43,75 @@ export class AddAlertFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    
-
     this.route.params.subscribe(
       (params: Params) => {
         this.id = +params['id'];
         this.editMode = params['id'] != null;
         console.log(this.editMode);
+        console.log(this.id);
         this.initForm();
     })
   }
 
   initForm() {
     if (this.editMode) {
-      let alertForm: AlertForm;
-      this.alertService.getById(this.id)
-        .subscribe(
-        (data: AlertForm) => {
-          alertForm = data;
-        }
-      )
-      console.log(alertForm);
-      this.alertSubject = this.formBuilder.group({
-        entity: [alertForm.entity],
-        entityTarget: [alertForm.entityCriteria === 'ALL' || alertForm.entityCriteria === 'ONE' ? alertForm.entityCriteria : 'null'],
-        entityCriteria: [alertForm.entityCriteria === 'ONE' || alertForm.entityCriteria === 'ALL' ? '' : alertForm.entityCriteria, Validators.required],
-        entityCriteriaValue: [alertForm.entityCriteria === 'ALL' ? '' : alertForm.entityCriteriaValue, Validators.required],
-      });
+      let alertForm : AlertForm;
+      this.alertService.getById(this.id).subscribe((data: AlertForm) => {
+        console.log(data);
+        alertForm = data;
+        // Object.assign(alertForm, data);
 
-      this.alertTrigger = this.formBuilder.group({
-        update: [alertForm.update === true ? 'true' : 'false', Validators.required],
-        attribute: [alertForm.attribute, Validators.required],
-        wantedAttributeValue: [alertForm.wantedAttributeValue, Validators.required],
-        dayNumber: [
-          alertForm.dayNumber,
-          [Validators.pattern(/^$|^[0-9]+[0-9]*$/), Validators.required],
-        ],
-      });
+        console.log(alertForm);
+        this.alertSubject = this.formBuilder.group({
+          entity: [alertForm.entity],
+          entityTarget: [
+            alertForm.entityCriteria === 'ALL' ||
+            alertForm.entityCriteria === 'ONE'
+              ? alertForm.entityCriteria
+              : 'null',
+          ],
+          entityCriteria: [
+            alertForm.entityCriteria === 'ONE' ||
+            alertForm.entityCriteria === 'ALL'
+              ? ''
+              : alertForm.entityCriteria,
+            Validators.required,
+          ],
+          entityCriteriaValue: [
+            alertForm.entityCriteria === 'ALL'
+              ? ''
+              : alertForm.entityCriteriaValue,
+            Validators.required,
+          ],
+        });
 
-      this.alertDestination = this.formBuilder.group({
-        alertMode: [alertForm.alertMode, Validators.required],
-        destination: [alertForm.destination, Validators.required],
-        destinationCriteria: ['', Validators.required],
-        destinationValue: ['', Validators.required],
-        text: [alertForm.text, Validators.required],
+        this.alertTrigger = this.formBuilder.group({
+          update: [
+            alertForm.update === true ? 'true' : 'false',
+            Validators.required,
+          ],
+          attribute: [alertForm.attribute, Validators.required],
+          wantedAttributeValue: [
+            alertForm.wantedAttributeValue,
+            Validators.required,
+          ],
+          dayNumber: [
+            alertForm.dayNumber,
+            [Validators.pattern(/^$|^[0-9]+[0-9]*$/), Validators.required],
+          ],
+        });
+
+        this.alertDestination = this.formBuilder.group({
+          alertMode: [alertForm.alertMode, Validators.required],
+          destination: [alertForm.destination === 'ONE' || alertForm.destination === 'ALL' ? alertForm.destination : 'CRITERIA', Validators.required],
+          destinationCriteria: [alertForm.destination === 'ONE' || alertForm.destination === 'ALL' ? '' : alertForm.destination, Validators.required],
+          destinationValue: [alertForm.destinationValue, Validators.required],
+          text: [alertForm.text, Validators.required],
+        });
+        console.log(this.alertSubject.value);
+        console.log(this.alertTrigger.value);
+        console.log(this.alertDestination.value);
       });
-      console.log(this.alertSubject.value);
-      console.log(this.alertTrigger.value);
-      console.log(this.alertDestination.value);
     }
     else {
       console.log('addMode 5edmet');
@@ -157,11 +178,12 @@ export class AddAlertFormComponent implements OnInit {
     this.alertService.handler(
       this.alertSubject,
       this.alertTrigger,
-      this.alertDestination
+      this.alertDestination,
+      this.id
     );
     if (this.editMode) {
       this.alertService.update().subscribe((alertForm: AlertForm) => {
-        console.log(alertForm);
+        this.alertService.alertUpdated.next(alertForm);
         this.router.navigate(['/']);
       });
     } else {

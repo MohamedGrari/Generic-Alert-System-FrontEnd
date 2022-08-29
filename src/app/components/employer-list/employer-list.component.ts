@@ -10,6 +10,7 @@ declare var window: any;
   styleUrls: ['./employer-list.component.css'],
 })
 export class EmployerListComponent implements OnInit {
+  id: number;
   editedEmployer: Employer;
   editMode = false;
   employerForm: FormGroup;
@@ -36,6 +37,8 @@ export class EmployerListComponent implements OnInit {
   ngOnInit(): void {
     this.employerService.get().subscribe((emp: Employer[]) => {
       this.employers = emp;
+      console.log(emp);
+      console.log(this.employers);
     })
     this.formModal = new window.bootstrap.Modal(
       document.getElementById('myModal')
@@ -55,12 +58,14 @@ export class EmployerListComponent implements OnInit {
   }
   saveSomeThing() {
     if (this.editMode) {
+      this.employerService.handler(this.employerForm, this.id);
       this.employerService.update().subscribe((emp: Employer) => {
         this.employers.splice(this.employers.indexOf(this.editedEmployer),1,emp)
       });
     } else {
+      this.employerService.handler(this.employerForm);
       this.employerService.create().subscribe((emp: Employer) => {
-        this.employers.push(emp)
+        this.employers.splice(0,0,emp);
       })
     }
     console.log(this.employerForm);
@@ -68,6 +73,7 @@ export class EmployerListComponent implements OnInit {
   }
 
   onEdit(employer: Employer) {
+    this.id = employer.id;
     this.formModal.show();
     this.editMode = true;
     this.editedEmployer = employer;
@@ -84,7 +90,7 @@ export class EmployerListComponent implements OnInit {
         status: [employer.status, Validators.required],
         contractType: [employer.contractType, Validators.required],
         hireDate: [employer.hireDate, Validators.required],
-        endContract: [employer.endContract, Validators.required],
+        endContract: [employer.endContract],
         birthday: [employer.birthday, Validators.required],
       });
     } else {
@@ -96,7 +102,7 @@ export class EmployerListComponent implements OnInit {
         status: ['', Validators.required],
         contractType: ['', Validators.required],
         hireDate: ['', Validators.required],
-        endContract: ['', Validators.required],
+        endContract: [''],
         birthday: ['', Validators.required],
       });
     }
