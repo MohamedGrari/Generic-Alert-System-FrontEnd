@@ -1,7 +1,21 @@
 <div class="container">
-  <div class="row">
+  <div class="row mt-5">
     <div class="col col-xs-12">
-<table class="table table-sm table-responsive table-hover">
+      <input class="form-control" type="text" name="search" [(ngModel)]="searchText" placeholder="search here...">
+      </div>
+      </div>
+      </div>
+      <div class="container">
+  <div class="row">
+    <div class="col d-flex justify-content-center">
+      <app-spinner *ngIf="showSpinner"></app-spinner>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row mt-3">
+    <div class="col col-xs-12">
+<table class="table table-sm table-responsive table-hover table-bordered table-striped ">
   <thead>
     <tr>
       <th scope="col">Job ID</th>
@@ -14,7 +28,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let job of jobs">
+    <tr *ngFor="let job of jobs | filter:searchText| paginate: {itemsPerPage: 7, currentPage: p};">
       <th scope="row">{{ job.jobId.substr(24,12) }}</th>
       <td>{{ job.jobGroup.replace("_JOBS","") }}</td>
       <td>{{ job.scheduledAt }}</td>
@@ -29,7 +43,7 @@
     </tr>
   </tbody>
 </table>
-
+<pagination-controls (pageChange) = "p = $event"></pagination-controls>
 
 <!-- <div class="container">
   <div class="row">

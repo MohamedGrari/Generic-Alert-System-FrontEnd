@@ -10,24 +10,27 @@ declare var window: any;
   styleUrls: ['./employer-list.component.css'],
 })
 export class EmployerListComponent implements OnInit {
+  searchText: any;
+  showSpinner: boolean = true;
+  p: number = 1;
   id: number;
   editedEmployer: Employer;
   editMode = false;
   employerForm: FormGroup;
   formModal: any;
   employers: Employer[] = [
-    {
-      id: 1,
-      name: 'Med',
-      email: 'graristar@gmail.com',
-      phoneNumber: '+21653536001',
-      position: 'MANAGER',
-      status: 'ON',
-      contractType: 'CDI',
-      endContract: '2022-08-29',
-      birthday: '1996-09-30',
-      hireDate: '2022-01-01',
-    },
+    // {
+    //   id: 1,
+    //   name: 'Med',
+    //   email: 'graristar@gmail.com',
+    //   phoneNumber: '+21653536001',
+    //   position: 'MANAGER',
+    //   status: 'ON',
+    //   contractType: 'CDI',
+    //   endContract: '2022-08-29',
+    //   birthday: '1996-09-30',
+    //   hireDate: '2022-01-01',
+    // },
   ];
   constructor(
     private formBuilder: FormBuilder,
@@ -36,55 +39,69 @@ export class EmployerListComponent implements OnInit {
 
   ngOnInit(): void {
     this.employerService.get().subscribe((emp: Employer[]) => {
+      if (emp) {
+        this.showSpinner = false;
+      }
       this.employers = emp;
-      console.log(emp);
-      console.log(this.employers);
-    })
+    });
     this.formModal = new window.bootstrap.Modal(
       document.getElementById('myModal')
     );
     this.initForm();
   }
+  onHide() {
+    this.formModal.hide();
+    this.editMode = false;
+  }
   onDelete(employer: Employer) {
-    this.employerService.delete(employer).subscribe(
-      () => {
-        this.employers.splice(this.employers.indexOf(employer), 1);
-      }
-    )
+    this.employerService.delete(employer).subscribe(() => {
+      this.employers.splice(this.employers.indexOf(employer), 1);
+    });
   }
   openFormModal() {
-    this.employerForm.reset();
+    this.initForm();
+    // this.employerForm.reset();
     this.formModal.show();
   }
   saveSomeThing() {
     if (this.editMode) {
       this.employerService.handler(this.employerForm, this.id);
       this.employerService.update().subscribe((emp: Employer) => {
-        this.employers.splice(this.employers.indexOf(this.editedEmployer),1,emp)
+        if (emp) {
+          this.showSpinner = false;
+        }
+        this.employers.splice(
+          this.employers.indexOf(this.editedEmployer),
+          1,
+          emp
+        );
       });
     } else {
       this.employerService.handler(this.employerForm);
       this.employerService.create().subscribe((emp: Employer) => {
-        this.employers.splice(0,0,emp);
-      })
+        if (emp) {
+          this.showSpinner = false;
+        }
+        this.employers.splice(0, 0, emp);
+      });
     }
-    console.log(this.employerForm);
-    this.formModal.hide();
+    this.onHide();
   }
 
   onEdit(employer: Employer) {
-    this.id = employer.id;
-    this.formModal.show();
     this.editMode = true;
+    this.id = employer.id;
     this.editedEmployer = employer;
     this.initForm();
+    this.formModal.show();
   }
   initForm() {
     if (this.editMode) {
+      console.log('edit mode');
       let employer = this.editedEmployer;
       this.employerForm = this.formBuilder.group({
         name: [employer.name, Validators.required],
-        email: [employer.email, Validators.required],
+        email: [employer.email, [Validators.required, Validators.email]],
         phoneNumber: [employer.phoneNumber, Validators.required],
         position: [employer.position, Validators.required],
         status: [employer.status, Validators.required],
@@ -94,9 +111,10 @@ export class EmployerListComponent implements OnInit {
         birthday: [employer.birthday, Validators.required],
       });
     } else {
+      console.log('add mode');
       this.employerForm = this.formBuilder.group({
         name: ['', Validators.required],
-        email: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
         phoneNumber: ['', Validators.required],
         position: ['', Validators.required],
         status: ['', Validators.required],

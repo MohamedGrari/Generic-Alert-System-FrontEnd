@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Employer } from 'src/app/models/employer.model';
+import { EmployerService } from 'src/app/services/employer.service';
 import { AlertForm } from '../../models/alert-form.model';
 import { AlertService } from '../../services/alert.service';
 
@@ -12,7 +14,7 @@ import { AlertService } from '../../services/alert.service';
 export class AddAlertFormComponent implements OnInit {
   editMode = false;
   id: number;
-  
+  showSpinner: boolean = false;
   alertSubject!: FormGroup;
   alertTrigger!: FormGroup;
   alertDestination!: FormGroup;
@@ -35,33 +37,38 @@ export class AddAlertFormComponent implements OnInit {
   destinationValue$ = 'null';
   destinationCriteria$ = 'null';
 
+  employersName: string[] = [];
+  employersId: number[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private alertService: AlertService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private employerService : EmployerService
   ) {}
 
   ngOnInit() {
-    this.route.params.subscribe(
-      (params: Params) => {
-        this.id = +params['id'];
-        this.editMode = params['id'] != null;
-        console.log(this.editMode);
-        console.log(this.id);
-        this.initForm();
-    })
+    this.route.params.subscribe((params: Params) => {
+      this.id = +params['id'];
+      this.editMode = params['id'] != null;
+      this.initForm();
+    });
+    this.employerService.get().subscribe(
+      (employers: Employer[]) => {
+        for (let emp of employers) {
+          this.employersName.push(emp.name); 
+          this.employersId.push(emp.id);
+        }
+      }
+    )
   }
 
   initForm() {
     if (this.editMode) {
-      let alertForm : AlertForm;
+      let alertForm: AlertForm;
       this.alertService.getById(this.id).subscribe((data: AlertForm) => {
-        console.log(data);
         alertForm = data;
-        // Object.assign(alertForm, data);
-
-        console.log(alertForm);
         this.alertSubject = this.formBuilder.group({
           entity: [alertForm.entity],
           entityTarget: [
@@ -103,8 +110,18 @@ export class AddAlertFormComponent implements OnInit {
 
         this.alertDestination = this.formBuilder.group({
           alertMode: [alertForm.alertMode, Validators.required],
-          destination: [alertForm.destination === 'ONE' || alertForm.destination === 'ALL' ? alertForm.destination : 'CRITERIA', Validators.required],
-          destinationCriteria: [alertForm.destination === 'ONE' || alertForm.destination === 'ALL' ? '' : alertForm.destination, Validators.required],
+          destination: [
+            alertForm.destination === 'ONE' || alertForm.destination === 'ALL'
+              ? alertForm.destination
+              : 'CRITERIA',
+            Validators.required,
+          ],
+          destinationCriteria: [
+            alertForm.destination === 'ONE' || alertForm.destination === 'ALL'
+              ? ''
+              : alertForm.destination,
+            Validators.required,
+          ],
           destinationValue: [alertForm.destinationValue, Validators.required],
           text: [alertForm.text, Validators.required],
         });
@@ -112,9 +129,7 @@ export class AddAlertFormComponent implements OnInit {
         console.log(this.alertTrigger.value);
         console.log(this.alertDestination.value);
       });
-    }
-    else {
-      console.log('addMode 5edmet');
+    } else {
       this.alertSubject = this.formBuilder.group({
         entity: ['employer'],
         entityTarget: ['ALL'],
@@ -141,18 +156,6 @@ export class AddAlertFormComponent implements OnInit {
       });
     }
   }
-
-  // get personal() {
-  //   return this.alertSubject.controls;
-  // }
-
-  // get address() {
-  //   return this.alertTrigger.controls;
-  // }
-
-  // get education() {
-  //   return this.alertDestination.controls;
-  // }
   next() {
     if (this.step == 1) {
       this.personal_step = true;
@@ -175,6 +178,7 @@ export class AddAlertFormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.showSpinner = true;
     this.alertService.handler(
       this.alertSubject,
       this.alertTrigger,
@@ -184,14 +188,14 @@ export class AddAlertFormComponent implements OnInit {
     if (this.editMode) {
       this.alertService.update().subscribe((alertForm: AlertForm) => {
         this.alertService.alertUpdated.next(alertForm);
+        this.showSpinner = false;
         this.router.navigate(['/']);
       });
     } else {
-      this.alertService.create().subscribe(
-        (alertForm: AlertForm) => {
-          console.log(alertForm);
-          this.router.navigate(['/']);
-        });
+      this.alertService.create().subscribe((alertForm: AlertForm) => {
+        this.showSpinner = false;
+        this.router.navigate(['/']);
+      });
     }
   }
   submit() {
