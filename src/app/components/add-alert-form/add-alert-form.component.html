@@ -1,9 +1,9 @@
 <div class="container p-2 ">
   <div class="row">
     <div class="col-md-12 col-md-offset-3">
-      <button type="button" (click)="onClick()" class="btn btn-primary">
+      <!-- <button type="button" (click)="onClick()" class="btn btn-primary">
             clickMe
-          </button>
+          </button> -->
       <form [formGroup]="alertSubject" id="msform">
         <!-- progressbar -->
         <ul id="progressbar">
@@ -432,6 +432,7 @@
                     select the destination
                   </option>
                   <option value="ALL">ALL</option>
+                  <option value="AUTO">AUTO</option>
                   <option value="ONE">Specific employer</option>
                   <option value="CRITERIA">According to a criteria</option>
                 </select>
@@ -545,7 +546,7 @@
               alertDestination.controls['destination'].value === 'ONE'
             "
           >
-            <div class="col-xs-12">
+            <!-- <div class="col-xs-12">
               <div class="form-group">
                 <input
                   type="text"
@@ -554,6 +555,20 @@
                   class="form-control"
                   formControlName="destinationValue"
                 />
+              </div>
+            </div> -->
+            <div class="col-xs-12">
+              <div class="form-group">
+                <input
+                  type="text"
+                  placeholder="enter the employer's name"
+                  class="form-control"
+                  formControlName="destinationValue"
+                  list="empList"
+                />
+                <datalist id="empList">
+                  <option *ngFor="let emp of employersName; let i = index" value={{employersId[i]}}>{{emp}}</option>
+                </datalist>
               </div>
             </div>
           </div>
@@ -588,8 +603,9 @@
             name="submit"
             class="submit action-button"
             value="Save"
-            [disabled]="((alertDestination.controls['alertMode'].value !== 'CONSOLE' && alertDestination.controls['destination'].value !== 'ALL' && alertDestination.controls ['destinationValue'].invalid) 
-            || (alertDestination.controls['text'].invalid && alertDestination.controls['alertMode'].value !== 'CONSOLE') || (alertDestination.controls['alertMode'].value !== 'CONSOLE' && alertDestination.controls['destination'].value!=='ALL' && alertDestination.controls['destinationValue'].invalid))"
+            [disabled]= "((alertDestination.controls['alertMode'].value !== 'CONSOLE' && alertDestination.controls['destination'].value === 'ALL' && alertDestination.controls ['text'].invalid) || (alertDestination.controls['alertMode'].value !== 'CONSOLE' && alertDestination.controls['destination'].value === 'AUTO' && alertDestination.controls ['text'].invalid) || (alertDestination.controls['alertMode'].value !== 'CONSOLE' && alertDestination.controls['destination'].value === 'ONE' && alertDestination.controls ['destinationValue'].invalid) ||
+            (alertDestination.controls['alertMode'].value !== 'CONSOLE' && alertDestination.controls['destination'].value === 'CRITERIA' && alertDestination.controls ['destinationValue'].invalid) || (alertDestination.controls['alertMode'].value !== 'CONSOLE' && alertDestination.controls ['text'].invalid) || (alertDestination.controls['alertMode'].value !== 'CONSOLE' && alertDestination.controls ['destination'].invalid)
+            ) "
           />
             </div>
             <div class="container">

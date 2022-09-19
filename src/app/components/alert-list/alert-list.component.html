@@ -36,7 +36,7 @@
       <th scope="row">{{alert.id}}</th>
       <td>{{ alert.entity === 'employer' ? 'emp' : alert.entity}}</td>
       <td>{{ alert.entityCriteria }}</td>
-      <td>{{alert.entityCriteriaValue === 'ON' ? 'ACTIVE' : alert.entityCriteriaValue === 'OFF' ? 'INACTIVE' : alert.entityCriteriaValue=== '' ? '-' : alert.entityCriteriaValue}}</td>
+      <td>{{alert.entityCriteriaValue === 'ON' ? 'ACTIVE' : alert.entityCriteriaValue === 'OFF' ? 'INACTIVE' : alert.entityCriteriaValue=== '' ? '-' : alert.entityCriteria === 'ONE' ? '-' : alert.entityCriteriaValue}}</td>
       <td>{{alert.attribute}}</td>
       <td>{{alert.wantedAttributeValue === 'ON' ? 'ACTIVE' : alert.wantedAttributeValue === 'OFF' ? 'INACTIVE' : alert.wantedAttributeValue === '' ? '-' : alert.wantedAttributeValue}}</td>
       <td>{{alert.dayNumber === 0 ? '-' : alert.dayNumber}}</td>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AlertForm } from 'src/app/models/alert-form.model';
 import { AlertService } from 'src/app/services/alert.service';
+import { EmployerService } from 'src/app/services/employer.service';
 
 @Component({
   selector: 'app-alert-list',
@@ -58,7 +59,7 @@ export class AlertListComponent implements OnInit {
     //   text: 'hi by med',
     // },
   ];
-  constructor(private alertService: AlertService) {}
+  constructor(private alertService: AlertService, private employerService : EmployerService) {}
 
   ngOnInit(): void {
     this.alertSubscription = this.alertService
